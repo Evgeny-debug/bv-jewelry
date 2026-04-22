@@ -1621,3 +1621,5 @@ header.scrolled {
     border-left: 1px solid var(--border) !important;
     border-right: 1px solid var(--border) !important;
 }
+.cursor-grab { cursor: grab; }
+.cursor-grabbing { cursor: grabbing !important; }

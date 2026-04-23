@@ -58,22 +58,22 @@ p, .panel-desc, .nav-link, .dropdown-item, .auth-input {
    ПАЛИТРА СВЕТЛОЙ ТЕМЫ (Deep Beige / Sand Desert)
    ========================================== */
 [data-theme="light"] {
-    /* Глубокий бежево-песочный фон (значительно темнее предыдущего) */
-    --bg-body: #C9C1B2;       
-    /* Карточки цвета "слоновой кости" для мягкого выделения */
-    --bg-card: #D6CFC1;       
+    /* Глубокий бежево-песочный фон */
+    --bg-body: #C9C1B2;        
+    /* Карточки цвета "слоновой кости" */
+    --bg-card: #D6CFC1;        
     /* Темный бежевый для вложенных элементов */
-    --bg-elevated: #B8B0A1;   
+    --bg-elevated: #B8B0A1;    
     
-    /* Текст цвета "горький шоколад" — идеальная четкость на бежевом */
-    --text-main: #1F1D1A;     
+    /* Текст цвета "горький шоколад" */
+    --text-main: #1F1D1A;      
     /* Приглушенный коричнево-серый */
-    --text-muted: #5A544C;    
+    --text-muted: #5A544C;     
     
-    /* Насыщенное античное золото */
-    --gold-muted: #8F6923;    
+    /* ФИКС: Насыщенное античное золото для текста (читабельное!) */
+    --gold-muted: #7A571B;    
     
-    /* Границы элементов (сделаны темнее для структуры) */
+    /* Границы элементов */
     --border: rgba(31, 29, 26, 0.15); 
     /* Матовое стекло с песочным оттенком */
     --glass-bg: rgba(201, 193, 178, 0.85); 
@@ -82,6 +82,20 @@ p, .panel-desc, .nav-link, .dropdown-item, .auth-input {
     --shadow-soft: 0 12px 32px rgba(31, 29, 26, 0.08);
     --shadow-mid: 0 18px 44px rgba(31, 29, 26, 0.12);
     --shadow-strong: 0 26px 70px rgba(31, 29, 26, 0.18);
+}
+
+/* ФИКС ДЛЯ ПРАЙСА И СПЕЦИФИЧНЫХ ЦВЕТОВ В СВЕТЛОЙ ТЕМЕ */
+/* Делаем серебро темно-графитовым, чтобы оно читалось */
+[data-theme="light"] .text-\[\#c0c0c0\] {
+    color: #4A4A4A !important; 
+}
+/* Делаем яркое золото более глубоким бронзовым */
+[data-theme="light"] .text-\[\#e8b923\] {
+    color: #8B631C !important;
+}
+/* Делаем светло-серое серебро (как в бейджах) темно-серым */
+[data-theme="light"] .badge-sold-out {
+    background-color: #5A544C !important;
 }
 /* ==========================================
    ШАПКА (HEADER)
@@ -293,10 +307,39 @@ header.scrolled {
    ========================================== */
 .marquee-wrapper { background: var(--glass-bg); backdrop-filter: blur(10px); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 24px 0; overflow: hidden; position: relative; white-space: nowrap; cursor: grab; touch-action: pan-y; }
 .marquee-wrapper.active { cursor: grabbing; }
-.marquee-track, #marqueeTrack { display: flex; gap: 40px; width: max-content; will-change: transform; align-items: center;}
-.marquee-item { font-family: 'Playfair Display', serif; font-size: 18px; font-style: italic; color: var(--gold-muted); text-transform: uppercase; letter-spacing: 2px; display: inline-block; transition: 0.3s; text-decoration: none; }
-.marquee-item:hover { color: var(--text-main); transform: scale(1.05); }
+.marquee-track, #marqueeTrack { 
+    display: flex; 
+    gap: 0px; /* ВБИВАЄМО 40px, які робили діру */
+    width: max-content; 
+    will-change: transform; 
+    align-items: center;
+}
 
+.marquee-item { 
+    flex-shrink: 0;
+    padding: 0; /* Прибираємо зайве */
+    font-family: 'Playfair Display', serif; 
+    font-size: 20px; 
+    font-style: italic; 
+    color: var(--gold-muted); 
+    text-transform: uppercase; 
+    letter-spacing: 2px; 
+    display: flex; 
+    align-items: center;
+    transition: 0.3s; 
+    text-decoration: none; 
+    user-select: none; /* ЗАБОРОНА виділення тексту */
+    -webkit-user-drag: none; /* ЗАБОРОНА перетягування лінку */
+}
+
+.marquee-item::after {
+    content: "•";
+    margin: 0 25px; /* Ідеальний, компактний відступ з обох боків крапки */
+    color: var(--gold-muted);
+    opacity: 0.4;
+}
+
+.marquee-item:hover { color: var(--text-main); transform: scale(1.05); }
 .banner-slider-container { 
     position: relative; 
     width: 100%; 
@@ -770,15 +813,26 @@ body:has(#home) header:not(.scrolled) .exclusive-nav-btn {
 }
 
 /* Заголовок группы (с градиентной подложкой) */
+/* Підкатегорія (Рівень 2: Градієнт та акцент) */
+.zlato-group-wrapper {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+}
+.zlato-group-wrapper:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
 .zlato-group-title {
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--text-main);
     margin-bottom: 12px;
     padding: 10px 14px;
     border-radius: 8px;
-    background: linear-gradient(90deg, color-mix(in srgb, var(--bg-card) 100%, transparent) 0%, transparent 100%);
+    background: linear-gradient(90deg, color-mix(in srgb, var(--gold-muted) 15%, transparent) 0%, transparent 100%);
+    border-left: 2px solid var(--gold-muted);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -787,8 +841,7 @@ body:has(#home) header:not(.scrolled) .exclusive-nav-btn {
     text-decoration: none;
 }
 .zlato-group-title:hover {
-    color: var(--gold-muted);
-    background: linear-gradient(90deg, color-mix(in srgb, var(--gold-muted) 15%, transparent) 0%, transparent 100%);
+    background: linear-gradient(90deg, color-mix(in srgb, var(--gold-muted) 25%, transparent) 0%, transparent 100%);
 }
 .zlato-group-title svg {
     width: 14px;
@@ -807,16 +860,16 @@ body:has(#home) header:not(.scrolled) .exclusive-nav-btn {
 }
 
 .zlato-tag {
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 500;
     color: var(--text-main);
     opacity: 0.75;
-    padding: 6px 10px;
+    padding: 6px 12px;
     border: 1px solid var(--border);
-    border-radius: 6px;
+    border-radius: 8px;
     text-decoration: none;
     transition: all 0.3s ease;
-    background: color-mix(in srgb, var(--bg-body) 30%, transparent);
+    background: transparent;
 }
 .zlato-tag:hover {
     opacity: 1;
@@ -1585,20 +1638,18 @@ header.scrolled {
 /* В каруселях звужуємо картки, щоб влізло більше */
 .promo-track .product-card, 
 .weekly-track .product-card { 
-    width: 185px !important; /* Зробили ще вужче (було 210px) */
+    width: 240px !important; 
     flex-shrink: 0; 
 }
 
-/* В сітці каталогу: збільшуємо кількість колонок */
+/* В сітці каталогу: адекватна кількість колонок (макс 4) */
 @media (min-width: 1024px) {
-    .product-grid-wide { grid-template-columns: repeat(5, 1fr) !important; gap: 16px !important; }
+    .product-grid-wide { grid-template-columns: repeat(3, 1fr) !important; gap: 32px 20px !important; }
 }
 @media (min-width: 1280px) {
-    .product-grid-wide { grid-template-columns: repeat(6, 1fr) !important; gap: 20px !important; }
+    .product-grid-wide { grid-template-columns: repeat(4, 1fr) !important; gap: 40px 24px !important; }
 }
-@media (min-width: 1440px) {
-    .product-grid-wide { grid-template-columns: repeat(7, 1fr) !important; gap: 20px !important; } /* 7 карток в ряд! */
-}
+/* Видалили божевільні 7 колонок, щоб картки мали повітря і текст не обрізався */
 
 /* Пропорції карток: високі, вертикальні (editorial style) */
 .product-img-wrap, 
@@ -1623,3 +1674,70 @@ header.scrolled {
 }
 .cursor-grab { cursor: grab; }
 .cursor-grabbing { cursor: grabbing !important; }
+/* ==========================================
+   ЕЛЕГАНТНИЙ СКРОЛЛБАР (CUSTOM SCROLLBAR)
+   ========================================== */
+
+/* 1. Налаштування для Chrome, Safari та Edge */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 3px; /* Робимо його дуже тонким */
+}
+
+/* Доріжка, по якій рухається повзунок */
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent; /* Повністю прозора */
+}
+
+/* Сам повзунок */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--gold-muted); /* Колір золота */
+    border-radius: 20px; /* Заокруглені краї */
+    opacity: 0.3;
+}
+
+/* Повзунок при наведенні або активності */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: var(--text-main); /* Стає білим або темним (залежно від теми) при контакті */
+}
+
+/* 2. Налаштування для Firefox */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold-muted) transparent;
+}
+
+/* 3. Додатковий фікс: прибираємо горизонтальний скролл, якщо він раптом з'явиться */
+aside.custom-scrollbar {
+    overflow-x: hidden !important;
+}
+/* Кастомний селект сортування */
+#sortOptionsList {
+    background: color-mix(in srgb, var(--bg-card) 95%, white 5%);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+}
+
+#sortOptionsList.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.sort-option {
+    color: var(--text-main);
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.sort-option:hover {
+    opacity: 1;
+    color: var(--gold-muted);
+}
+
+.sort-option.active {
+    color: var(--gold-muted);
+    opacity: 1;
+    background: rgba(197, 160, 89, 0.1);
+    font-weight: 600;
+}

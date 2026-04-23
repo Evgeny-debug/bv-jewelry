@@ -75,7 +75,7 @@
             <button onclick="switchTab('categories')" id="tab-categories" class="tab-btn w-full text-left px-4 py-3 rounded-lg hover:bg-white/5 transition text-gray-400 text-sm">🗂 Категорії</button>
             <button onclick="switchTab('home-visuals')" id="tab-home-visuals" class="tab-btn w-full text-left px-4 py-3 rounded-lg hover:bg-white/5 transition text-gray-400 text-sm">🖼 Головна (Банери)</button>
             <button onclick="switchTab('exclusive')" id="tab-exclusive" class="tab-btn w-full text-left px-4 py-3 rounded-lg hover:bg-white/5 transition text-gray-400 text-sm">💎 Ексклюзив</button>
-            <button onclick="switchTab('builder')" id="tab-builder" class="tab-btn w-full text-left px-4 py-3 rounded-lg hover:bg-white/5 transition text-gray-400 text-sm">🛠 Конструктор Сторінок</button>
+            <button onclick="switchTab('builder')" id="tab-builder" class="tab-btn w-full text-left px-4 py-3 rounded-lg hover:bg-white/5 transition text-gray-400 text-sm">🎨 Конструктор та Кольори</button>
             <button onclick="switchTab('price-builder')" id="tab-price-builder" class="tab-btn w-full text-left px-4 py-3 rounded-lg hover:bg-white/5 transition text-gray-400 text-sm">📋 Редактор Прайсу</button>
             <button onclick="switchTab('settings')" id="tab-settings" class="tab-btn w-full text-left px-4 py-3 rounded-lg hover:bg-white/5 transition text-gray-400 text-sm">⚙️ Налаштування Сайту</button>
         </nav>
@@ -122,15 +122,15 @@
         </section>
 
         <section id="content-builder" class="tab-content hidden h-full">
-            <h2 class="text-2xl font-semibold mb-6">Конструктор Сторінок (Headless CMS)</h2>
+            <h2 class="text-2xl font-semibold mb-6">Конструктор Сторінок та Кольори</h2>
             <div class="glass-panel p-6 mb-6">
                 <label class="text-[10px] uppercase text-gray-400 block mb-1">Оберіть сторінку для редагування</label>
                 <select id="builder-page-select" class="input-field" onchange="loadPageBuilderForm()">
+                    <option value="home_hero">Головна: Обкладинка (Hero)</option>
                     <option value="about">Історія Atelier (Про нас)</option>
                     <option value="warranty">Гарантія та Якість</option>
                     <option value="terms">Умови та Доставка</option>
                     <option value="reviews">Відгуки клієнтів</option>
-                    <option value="home_hero">Головна: Текст на Hero обкладинці</option>
                 </select>
             </div>
             <div id="builder-form-container" class="glass-panel p-6"></div>
@@ -226,7 +226,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-6 text-right"><button onclick="saveSiteSettings()" class="btn-primary">Зберегти</button></div>
+            <div class="mt-6 text-right"><button onclick="saveSiteSettings()" class="btn-primary">Зберегти глобальні</button></div>
         </section>
 
     </main>
@@ -299,215 +299,13 @@
         </div>
     </div>
 
-    <div id="categoryModal" class="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity p-4">
-        <div class="glass-panel p-6 w-full max-w-sm">
-            <h3 class="text-lg font-semibold mb-4" id="catModalTitle">Додати Категорію</h3>
-            <form id="categoryForm" class="flex flex-col gap-4">
-                <input type="hidden" id="cat-old-id">
-                <div><label class="text-[10px] uppercase text-gray-400 block mb-1">ID (Англ. без пробілів)</label><input type="text" id="cat-id" class="input-field" required pattern="[a-zA-Z0-9_-]+"></div>
-                <div><label class="text-[10px] uppercase text-gray-400 block mb-1">Назва (UA)</label><input type="text" id="cat-name" class="input-field" required></div>
-                <div class="flex gap-3 mt-2"><button type="button" onclick="closeCategoryModal()" class="flex-1 btn-secondary py-2 text-sm">Скасувати</button><button type="submit" class="flex-1 btn-primary py-2 text-sm">Зберегти</button></div>
-            </form>
-        </div>
-    </div>
-
-    <div id="subCategoryModal" class="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity p-4">
-        <div class="glass-panel p-6 w-full max-w-sm">
-            <h3 class="text-lg font-semibold mb-4" id="subCatModalTitle">Додати Підкатегорію</h3>
-            <form id="subCategoryForm" class="flex flex-col gap-4">
-                <input type="hidden" id="subcat-parent-id"><input type="hidden" id="subcat-old-id">
-                <div><label class="text-[10px] uppercase text-gray-400 block mb-1">ID (Англ)</label><input type="text" id="subcat-id" class="input-field" required pattern="[a-zA-Z0-9_-]+"></div>
-                <div><label class="text-[10px] uppercase text-gray-400 block mb-1">Назва (UA)</label><input type="text" id="subcat-name" class="input-field" required></div>
-                <div class="flex gap-3 mt-2"><button type="button" onclick="closeSubCategoryModal()" class="flex-1 btn-secondary py-2 text-sm">Скасувати</button><button type="submit" class="flex-1 btn-primary py-2 text-sm">Зберегти</button></div>
-            </form>
-        </div>
-    </div>
-
-    <div id="bannerModal" class="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity p-4">
-        <div class="glass-panel p-6 w-full max-w-lg">
-            <h3 class="text-lg font-semibold mb-4" id="bannerModalTitle">Банер</h3>
-            <form id="bannerForm" class="flex flex-col gap-4">
-                <input type="hidden" id="banner-id"><input type="hidden" id="banner-img"> 
-                <div class="bg-white/5 p-4 rounded-lg">
-                    <input type="file" accept="image/png, image/jpeg, image/webp" class="input-field file-input" onchange="handleImageUpload(event, 'bannerPreview', 'banner-img', 2)">
-                    <img id="bannerPreview" class="w-full aspect-[21/9] object-cover rounded mt-2 hidden border border-white/20">
-                </div>
-                <div><label class="text-[10px] uppercase text-gray-400 block mb-1">Посилання (catalog.html#sale)</label><input type="text" id="banner-link" class="input-field"></div>
-                <div class="flex gap-3 mt-2"><button type="button" onclick="closeBannerModal()" class="flex-1 btn-secondary py-2 text-sm">Скасувати</button><button type="submit" class="flex-1 btn-primary py-2 text-sm">Зберегти</button></div>
-            </form>
-        </div>
-    </div>
-
-    <div id="processModal" class="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity p-4">
-        <div class="glass-panel p-6 w-full max-w-lg">
-            <h3 class="text-lg font-semibold mb-4" id="processModalTitle">Етап створення</h3>
-            <form id="processForm" class="flex flex-col gap-4" onsubmit="event.preventDefault(); saveProcessStep();">
-                <input type="hidden" id="process-id"><input type="hidden" id="process-img"> 
-                <div><label class="text-[10px] uppercase text-gray-400 block mb-1">Назва</label><input type="text" id="process-title" class="input-field" required></div>
-                <div><label class="text-[10px] uppercase text-gray-400 block mb-1">Опис</label><textarea id="process-desc" class="input-field h-24 resize-none" required></textarea></div>
-                <div class="bg-white/5 p-4 rounded-lg">
-                    <input type="file" accept="image/png, image/jpeg, image/webp" class="input-field file-input" onchange="handleImageUpload(event, 'processPreview', 'process-img', 1)">
-                    <img id="processPreview" class="w-full aspect-[4/3] object-cover rounded mt-2 hidden border border-white/20">
-                </div>
-                <div class="flex gap-3 mt-2"><button type="button" onclick="closeProcessModal()" class="flex-1 btn-secondary py-2 text-sm">Скасувати</button><button type="submit" class="flex-1 btn-primary py-2 text-sm">Зберегти</button></div>
-            </form>
-        </div>
-    </div>
-
-    <div id="materialModal" class="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity p-4">
-        <div class="glass-panel p-6 w-full max-w-sm">
-            <h3 class="text-lg font-semibold mb-4" id="materialModalTitle">Кнопка матеріалу</h3>
-            <form id="materialForm" class="flex flex-col gap-4" onsubmit="event.preventDefault(); saveMaterialOption();">
-                <input type="hidden" id="material-old-id">
-                <div><label class="text-[10px] uppercase text-gray-400 block mb-1">ID (Англ)</label><input type="text" id="material-id" class="input-field" required pattern="[a-zA-Z0-9_-]+"></div>
-                <div><label class="text-[10px] uppercase text-gray-400 block mb-1">Текст на кнопці</label><input type="text" id="material-label" class="input-field" required></div>
-                <div class="flex items-center gap-2 mt-2">
-                    <input type="checkbox" id="material-selected" class="w-4 h-4 accent-[#c5a059]">
-                    <label for="material-selected" class="text-[11px] text-gray-300">Вибрана за замовчуванням</label>
-                </div>
-                <div class="flex gap-3 mt-2"><button type="button" onclick="closeMaterialModal()" class="flex-1 btn-secondary py-2 text-sm">Скасувати</button><button type="submit" class="flex-1 btn-primary py-2 text-sm">Зберегти</button></div>
-            </form>
-        </div>
-    </div>
+    <div id="categoryModal" class="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity p-4"><div class="glass-panel p-6 w-full max-w-sm"><h3 class="text-lg font-semibold mb-4" id="catModalTitle">Додати Категорію</h3><form id="categoryForm" class="flex flex-col gap-4"><input type="hidden" id="cat-old-id"><div><label class="text-[10px] uppercase text-gray-400 block mb-1">ID (Англ. без пробілів)</label><input type="text" id="cat-id" class="input-field" required pattern="[a-zA-Z0-9_-]+"></div><div><label class="text-[10px] uppercase text-gray-400 block mb-1">Назва (UA)</label><input type="text" id="cat-name" class="input-field" required></div><div class="flex gap-3 mt-2"><button type="button" onclick="closeCategoryModal()" class="flex-1 btn-secondary py-2 text-sm">Скасувати</button><button type="submit" class="flex-1 btn-primary py-2 text-sm">Зберегти</button></div></form></div></div>
+    <div id="level3Modal" class="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity p-4"><div class="glass-panel p-6 w-full max-w-sm"><h3 class="text-lg font-semibold mb-4" id="level3ModalTitle">Додати Під-підкатегорію</h3><form id="level3Form" class="flex flex-col gap-4"><input type="hidden" id="l3-parent-id"><input type="hidden" id="l3-sub-id"><input type="hidden" id="l3-old-id"><div><label class="text-[10px] uppercase text-gray-400 block mb-1">ID (Англ)</label><input type="text" id="l3-id" class="input-field" required pattern="[a-zA-Z0-9_-]+"></div><div><label class="text-[10px] uppercase text-gray-400 block mb-1">Назва</label><input type="text" id="l3-name" class="input-field" required></div><div class="flex gap-3 mt-2"><button type="button" onclick="closeLevel3Modal()" class="flex-1 btn-secondary py-2 text-sm">Скасувати</button><button type="submit" class="flex-1 btn-primary py-2 text-sm">Зберегти</button></div></form></div></div>
+    <div id="bannerModal" class="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity p-4"><div class="glass-panel p-6 w-full max-w-lg"><h3 class="text-lg font-semibold mb-4" id="bannerModalTitle">Банер</h3><form id="bannerForm" class="flex flex-col gap-4"><input type="hidden" id="banner-id"><input type="hidden" id="banner-img"> <div class="bg-white/5 p-4 rounded-lg"><input type="file" accept="image/png, image/jpeg, image/webp" class="input-field file-input" onchange="handleImageUpload(event, 'bannerPreview', 'banner-img', 2)"><img id="bannerPreview" class="w-full aspect-[21/9] object-cover rounded mt-2 hidden border border-white/20"></div><div><label class="text-[10px] uppercase text-gray-400 block mb-1">Посилання (catalog.html#sale)</label><input type="text" id="banner-link" class="input-field"></div><div class="flex gap-3 mt-2"><button type="button" onclick="closeBannerModal()" class="flex-1 btn-secondary py-2 text-sm">Скасувати</button><button type="submit" class="flex-1 btn-primary py-2 text-sm">Зберегти</button></div></form></div></div>
+    <div id="processModal" class="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity p-4"><div class="glass-panel p-6 w-full max-w-lg"><h3 class="text-lg font-semibold mb-4" id="processModalTitle">Етап створення</h3><form id="processForm" class="flex flex-col gap-4" onsubmit="event.preventDefault(); saveProcessStep();"><input type="hidden" id="process-id"><input type="hidden" id="process-img"> <div><label class="text-[10px] uppercase text-gray-400 block mb-1">Назва</label><input type="text" id="process-title" class="input-field" required></div><div><label class="text-[10px] uppercase text-gray-400 block mb-1">Опис</label><textarea id="process-desc" class="input-field h-24 resize-none" required></textarea></div><div class="bg-white/5 p-4 rounded-lg"><input type="file" accept="image/png, image/jpeg, image/webp" class="input-field file-input" onchange="handleImageUpload(event, 'processPreview', 'process-img', 1)"><img id="processPreview" class="w-full aspect-[4/3] object-cover rounded mt-2 hidden border border-white/20"></div><div class="flex gap-3 mt-2"><button type="button" onclick="closeProcessModal()" class="flex-1 btn-secondary py-2 text-sm">Скасувати</button><button type="submit" class="flex-1 btn-primary py-2 text-sm">Зберегти</button></div></form></div></div>
+    <div id="materialModal" class="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center hidden opacity-0 transition-opacity p-4"><div class="glass-panel p-6 w-full max-w-sm"><h3 class="text-lg font-semibold mb-4" id="materialModalTitle">Кнопка матеріалу</h3><form id="materialForm" class="flex flex-col gap-4" onsubmit="event.preventDefault(); saveMaterialOption();"><input type="hidden" id="material-old-id"><div><label class="text-[10px] uppercase text-gray-400 block mb-1">ID (Англ)</label><input type="text" id="material-id" class="input-field" required pattern="[a-zA-Z0-9_-]+"></div><div><label class="text-[10px] uppercase text-gray-400 block mb-1">Текст на кнопці</label><input type="text" id="material-label" class="input-field" required></div><div class="flex items-center gap-2 mt-2"><input type="checkbox" id="material-selected" class="w-4 h-4 accent-[#c5a059]"><label for="material-selected" class="text-[11px] text-gray-300">Вибрана за замовчуванням</label></div><div class="flex gap-3 mt-2"><button type="button" onclick="closeMaterialModal()" class="flex-1 btn-secondary py-2 text-sm">Скасувати</button><button type="submit" class="flex-1 btn-primary py-2 text-sm">Зберегти</button></div></form></div></div>
 
     <script>
-        // =================================================================
-        // ІНЖЕКТОР ПОВНИХ ДЕМО-ДАНИХ (Виконується лише 1 раз при порожній БД)
-        // =================================================================
-        if (!localStorage.getItem('bv_initialized')) {
-            const demoSettings = { 
-                goldRate: 3500, 
-                phone: '+38 063 45 40 901', 
-                tgLink: '', instLink: '', 
-                addr1: 'м. Ізмаїл, вул. Торгова, 68', 
-                addr2: 'м. Ізмаїл, вул. Покровська, 57',
-                bannerRatio: '3/1' // Глобальна пропорція банерів
-            };
-            
-            const demoCats = [
-                { id: 'rings', name: 'Каблучки', subcategories: [{id: 'gold_rings', name: 'Золоті'}, {id: 'silver_rings', name: 'Срібні'}] },
-                { id: 'earrings', name: 'Сережки', subcategories: [] },
-                { id: 'necklaces', name: 'Підвіски', subcategories: [] },
-                { id: 'bracelets', name: 'Браслети', subcategories: [] }
-            ];
-
-            const demoProds = [
-                { id: 'R-1001', sku: 'R-1001', name: 'Кольцо "Infinity"', variant: 'Золото 585', sizes: ['16.0','16.5','17.0'], category: 'rings', priceType: 'manual', price: 14200, status: 'in-stock', badge: 'new', img: 'https://images.pexels.com/photos/1458867/pexels-photo-1458867.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 'E-2002', sku: 'E-2002', name: 'Серьги "Night"', variant: 'Золото 585', category: 'earrings', priceType: 'manual', price: 8500, status: 'in-stock', badge: 'none', img: 'https://images.pexels.com/photos/1413420/pexels-photo-1413420.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 'N-3003', sku: 'N-3003', name: 'Подвеска "Essence"', variant: 'Золото 585', category: 'necklaces', priceType: 'auto', weight: 3.5, workCost: 1500, price: 13750, discount: 11900, status: 'in-stock', badge: 'sale', img: 'https://images.pexels.com/photos/6263143/pexels-photo-6263143.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 'B-4004', sku: 'B-4004', name: 'Браслет "Cuban"', variant: 'Золото 585', category: 'bracelets', priceType: 'manual', price: 18600, status: 'in-stock', badge: 'none', img: 'https://images.pexels.com/photos/11100346/pexels-photo-11100346.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 'R-1005', sku: 'R-1005', name: 'Кольцо "Deep Gold"', variant: 'Золото 750', sizes: ['15.5','16.0','18.0'], category: 'rings', priceType: 'manual', price: 21000, status: 'in-stock', badge: 'exclusive', img: 'https://images.pexels.com/photos/266621/pexels-photo-266621.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 'N-3006', sku: 'N-3006', name: 'Цепь "Snake"', variant: 'Срібло 925', category: 'necklaces', priceType: 'manual', price: 15400, status: 'in-stock', badge: 'none', img: 'https://images.pexels.com/photos/908602/pexels-photo-908602.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 'E-2007', sku: 'E-2007', name: 'Серьги "Drops"', variant: 'Золото 585', category: 'earrings', priceType: 'manual', price: 9800, status: 'in-stock', badge: 'none', img: 'https://images.pexels.com/photos/27308253/pexels-photo-27308253.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 'R-1008', sku: 'R-1008', name: 'Кольцо "Minimal"', variant: 'Срібло 925', sizes: ['17.5','18.5'], category: 'rings', priceType: 'manual', price: 6200, status: 'in-stock', badge: 'none', img: 'https://images.pexels.com/photos/1721996/pexels-photo-1721996.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 'B-4009', sku: 'B-4009', name: 'Браслет "Breeze"', variant: 'Золото 585', category: 'bracelets', priceType: 'manual', price: 13500, status: 'in-stock', badge: 'new', img: 'https://images.pexels.com/photos/4584612/pexels-photo-4584612.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 'N-3010', sku: 'N-3010', name: 'Подвеска "Star"', variant: 'Золото 585', category: 'necklaces', priceType: 'manual', price: 7400, status: 'in-stock', badge: 'none', img: 'https://images.pexels.com/photos/7436125/pexels-photo-7436125.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 'R-1011', sku: 'R-1011', name: 'Кольцо "Titan"', variant: 'Платина', sizes: ['19.0','20.0'], category: 'rings', priceType: 'manual', price: 28000, status: 'out-stock', badge: 'none', img: 'https://images.pexels.com/photos/1458867/pexels-photo-1458867.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 'E-2012', sku: 'E-2012', name: 'Серьги "Twist"', variant: 'Золото 585', category: 'earrings', priceType: 'manual', price: 11200, status: 'in-stock', badge: 'none', img: 'https://images.pexels.com/photos/6263143/pexels-photo-6263143.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 'N-3013', sku: 'N-3013', name: 'Цепь "Ocean"', variant: 'Золото 585', category: 'necklaces', priceType: 'manual', price: 19900, status: 'in-stock', badge: 'none', img: 'https://images.pexels.com/photos/11100346/pexels-photo-11100346.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 'R-1014', sku: 'R-1014', name: 'Кольцо "Glow"', variant: 'Срібло 925', sizes: ['16.0','17.0'], category: 'rings', priceType: 'manual', price: 8700, status: 'in-stock', badge: 'sale', img: 'https://images.pexels.com/photos/1413420/pexels-photo-1413420.jpeg?auto=compress&cs=tinysrgb&w=600' }
-            ];
-
-            const demoBanners = [
-                { id: 1, img: 'https://zolotakraina.ua/media/wysiwyg/1049_48120_4_26.jpg', link: 'catalog.html#sale' },
-                { id: 2, img: 'https://images.pexels.com/photos/28131346/pexels-photo-28131346.jpeg?auto=compress&cs=tinysrgb&w=1920', link: 'catalog.html#new' },
-                { id: 3, img: 'https://images.pexels.com/photos/27308253/pexels-photo-27308253.jpeg?auto=compress&cs=tinysrgb&w=1920', link: 'catalog.html' }
-            ];
-
-            const demoPages = {
-                'about': { title: 'Історія Atelier', content: '<p>Atelier BV Jewelry — це не просто бренд, це спадщина, яка передається з покоління в покоління. Ми створюємо прикраси, які стають сімейними реліквіями.</p><h3>Наші цінності</h3><p>Кожен виріб виготовляється вручну майстрами з багаторічним досвідом. Ми використовуємо лише сертифіковані дорогоцінні метали та каміння найвищої якості.</p><ul><li>Ексклюзивний дизайн та індивідуальний підхід до кожного клієнта.</li><li>Бездоганна якість матеріалів (золото 585, 750 проби).</li><li>Використання сучасних технологій у поєднанні з класичним ювелірним мистецтвом.</li></ul>' },
-                'warranty': { title: 'Гарантія на продукцію', content: '<p>Всі ювелірні вироби BV Jewelry проходять суворий контроль якості перед видачею клієнту. Всі дорогоцінні камені супроводжуються сертифікатами авторитетних світових лабораторій (GIA, HRD, IGI та інших).</p><h3>Що включає безкоштовне обслуговування</h3><p>Гарантія та безкоштовне обслуговування включає усунення прихованих дефектів, що виникли з вини виробника.</p><p>Для виконання гарантійного ремонту, заміни або безкоштовного обслуговування клієнту необхідно мати при собі: Товарний чек, паспорт виробу, гарантійний сертифікат. Гарантійне обслуговування здійснюється виключно при наявності чека, бірки, паспорта, сертифіката на ім\'я особи, на яку було оформлено виріб.</p><h3>Умови гарантійного обслуговування</h3><ul><li>Товар ремонтується протягом 10 днів з моменту прийому виробу в ремонт.</li><li>Покупець погоджується з тим, що всі пошкодження і дефекти, які можуть бути виявлені під час ремонту, виникли до прийняття виробу в ремонт.</li><li>При механічному пошкодженні (не гарантійний випадок) Ваш виріб може пройти платну послугу термінового ремонту і бути виданий в той же день. З цінами на послуги ремонту ви можете ознайомитися в розділі "Прайс".</li></ul><h3>Випадки, що не покриваються гарантією</h3><p>Гарантійні зобов\'язання не поширюються на ювелірні вироби, якщо були порушені умови експлуатації, або дефекти виникли в результаті недбалого використання:</p><ul><li>Ювелірний виріб отримав механічні пошкодження внаслідок навмисних або випадкових дій покупця.</li><li>Виріб був відремонтований покупцем самостійно або іншим ювеліром. BV Jewelry залишає за собою право не приймати виріб, якщо при огляді будуть виявлені спроби стороннього втручання.</li><li>Випадіння вставок каменів, перламутру, емалі, якщо прикраси були пошкоджені в результаті зовнішніх впливів (деформація, зміна розміру, чищення інструментами, не призначеними для ювелірних виробів).</li><li>Виріб не відповідає паспорту чи сертифікату виробу (проба, іменник, вага, розмір). Невідповідність цих факторів говорить про порушення цілісності виробу і не є гарантійним випадком.</li></ul>' },
-                'terms': { title: 'Умови оплати та доставки', content: '<p>Ми дбаємо про те, щоб процес покупки був максимально комфортним та безпечним для вас.</p><h3>Доставка</h3><ul><li><b>Нова Пошта:</b> Доставка у відділення або кур\'єром за адресою. Безкоштовно для замовлень від 5000 ₴.</li><li><b>Самовивіз:</b> Ви можете забрати своє замовлення безпосередньо з нашого Atelier в м. Ізмаїл.</li></ul><h3>Оплата</h3><ul><li>Онлайн оплата картою (Visa, MasterCard, Apple Pay, Google Pay).</li><li>Накладений платіж при отриманні (за умови мінімальної передоплати).</li><li>Оплата частинами від Монобанк та ПриватБанк.</li></ul>' },
-                'reviews': { title: 'Відгуки клієнтів', content: '<p>Ваша думка — найвища оцінка нашої роботи. Незабаром тут з\'явиться можливість залишати та читати відгуки наших клієнтів.</p><div class="text-center py-12 border border-dashed border-[var(--border)] rounded-2xl bg-[rgba(255,255,255,0.01)] mt-8"><button class="border border-[var(--gold-muted)] text-[var(--gold-muted)] px-8 py-3 rounded-none text-xs uppercase tracking-widest font-bold hover:bg-[var(--gold-muted)] hover:text-[#111] transition-colors">Залишити відгук</button></div>' },
-                'home_hero': { title: 'Колекція Atelier', subtitle: 'Відкрийте для себе вишуканість у кожній деталі нашої унікальної колекції.' }
-            };
-
-            const demoPrice = [
-                {
-                    category: "Ремонт ланцюгів та браслетів",
-                    items: [
-                        { name: "Запаяти одне місце зламу ланцюга", gold: "Від 600", silver: "Від 400" },
-                        { name: "Запаяти одне місце зламу ланцюга з відновленням малюнку", gold: "Від 1000", silver: "Від 600" },
-                        { name: "Перебирання замку «Карабін» (замiна пружини)", gold: "Від 300", silver: "Від 300" },
-                        { name: "Перебирання замку «Карабін» з реставрацією протертих частин, замiна пружини", gold: "Від 1500", silver: "Від 800" },
-                        { name: "Відновлення протертих кінцевих ланцюга (1 кінцевик)", gold: "Від 600", silver: "Від 400" },
-                        { name: "Замок «Карабін»", gold: "Від 2000", silver: "Від 800" },
-                        { name: "Замок «Шпренгельний»", gold: "Від 1500", silver: "Від 600" },
-                        { name: "Ремонт роз’ємних з’єднань ланцюгів (штифтування)", gold: "Від 800", silver: "Від 400" },
-                        { name: "Вкорочення браслетів, ланцюжкiв", gold: "Від 1000", silver: "Від 600" }
-                    ]
-                },
-                {
-                    category: "Ремонт каблучок, сережок та підвісок",
-                    items: [
-                        { name: "Запаяти одне місце зламу каблучки", gold: "Від 800", silver: "Від 500" },
-                        { name: "Запаяти одне місце зламу (каблучки, сережки, підвіски зі вставками)", gold: "Від 1000", silver: "Від 700" },
-                        { name: "Реставрація протертих сережок та підвісок (1 з’єднання)", gold: "Від 750", silver: "Від 500" },
-                        { name: "Лазерна пайка одного зламу", gold: "Від 800", silver: "Від 500" }
-                    ]
-                },
-                {
-                    category: "Збільшення та зменшення розміру каблучок",
-                    items: [
-                        { name: "Збільшити каблучку з камiнням (розтягування/прокатка до 1 розм.)", gold: "Від 800", silver: "Від 500" },
-                        { name: "Збільшити обручку шляхом доповнення", gold: "Від 4000", silver: "Від 1000" },
-                        { name: "Зменшити обручку шляхом вирізки незалежно від розміру", gold: "Від 1000", silver: "Від 600" },
-                        { name: "Зменшити шлюбну обручку шляхом стиснення (до 1 розм.)", gold: "Від 800", silver: "Від 500" },
-                        { name: "Збільшити шлюбну обручку шляхом прокатки по колу (до 1 розм.)", gold: "Від 800", silver: "Від 500" }
-                    ]
-                },
-                {
-                    category: "Закріплення Камiння",
-                    items: [
-                        { name: "Закріпити одну вставку (каміння) з підготовкою поверхні", gold: "Від 400", silver: "Від 400" },
-                        { name: "Вiдновлення 1-го крапану", gold: "Від 800", silver: "Від 800" },
-                        { name: "Закріплення діамантів", gold: "Договірна", silver: "Договірна" }
-                    ]
-                },
-                {
-                    category: "Чищення, полірування та догляд",
-                    items: [
-                        { name: "Виправити деформовану шинку каблучки, сережки", gold: "Від 600", silver: "Від 400" },
-                        { name: "Відполірувати каблучку, брошку, підвіску", gold: "Від 400", silver: "Від 300" },
-                        { name: "Відполірувати сережки", gold: "Від 600", silver: "Від 300" },
-                        { name: "Відполірувати ланцюг, браслет", gold: "Від 600", silver: "Від 300" }
-                    ]
-                },
-                {
-                    category: "Інші послуги",
-                    items: [
-                        { name: "Родіювання локальне", gold: "Від 2000", silver: "Від 2000" },
-                        { name: "Родіювання загальне (мін. 2000 грн)", gold: "Від 600/г", silver: "Від 600/г" },
-                        { name: "Позолочення (мін. 2000 грн)", gold: "Від 600/г", silver: "Від 600/г" },
-                        { name: "Гравіювання лазерне", gold: "Від 2000", silver: "Від 1000" },
-                        { name: "Пiдклеювання вставок, перлин, канатiв, бiрюзы", gold: "Від 200", silver: "Від 200" },
-                        { name: "Замiна канату на новий з штифтуванням кінцевих", gold: "Від 1600", silver: "Від 800" },
-                        { name: "Замiна канату на новий без штифтування", gold: "Від 800", silver: "Від 800" }
-                    ]
-                }
-            ];
-
-            const demoProcess = [
-                { id: 1, title: '3D Моделювання', desc: 'Створення точної цифрової моделі майбутньої прикраси.', img: 'https://images.unsplash.com/photo-1588444839132-e40f56d809a7?w=800' }
-            ];
-
-            const demoMaterials = [
-                { id: 'gold_own', label: 'Є своє золото', selected: true },
-                { id: 'gold_buy', label: 'Купити золото', selected: false }
-            ];
-
-            localStorage.setItem('bv_settings', JSON.stringify(demoSettings));
-            localStorage.setItem('bv_categories_tree', JSON.stringify(demoCats));
-            localStorage.setItem('bv_products', JSON.stringify(demoProds));
-            localStorage.setItem('bv_banners', JSON.stringify(demoBanners));
-            localStorage.setItem('bv_pages_content', JSON.stringify(demoPages));
-            localStorage.setItem('bv_price_list', JSON.stringify(demoPrice));
-            localStorage.setItem('bv_exclusive_process', JSON.stringify(demoProcess));
-            localStorage.setItem('bv_exclusive_materials', JSON.stringify(demoMaterials));
-            localStorage.setItem('bv_initialized', 'true');
-        }
-        // =================================================================
-
         // --- ДАНІ ТА СТРУКТУРА ---
         let categories = JSON.parse(localStorage.getItem('bv_categories_tree')) || [];
         let products = JSON.parse(localStorage.getItem('bv_products')) || [];
@@ -529,15 +327,21 @@
             setTimeout(() => { toast.classList.remove('show'); }, 3000);
         }
 
-        function handleImageUpload(event, previewId, hiddenInputId, maxMb) {
+        // Оновлена функція завантаження, яка тепер підтримує і img.src, і input.value (для Hero)
+        function handleImageUpload(event, previewId, targetInputId, maxMb) {
             const file = event.target.files[0];
             if (!file) return;
             if (file.size > maxMb * 1024 * 1024) return alert(`Файл занадто великий! Макс: ${maxMb}MB.`);
             const reader = new FileReader();
             reader.onload = e => {
-                document.getElementById(previewId).src = e.target.result;
-                document.getElementById(previewId).style.display = 'block';
-                document.getElementById(hiddenInputId).value = e.target.result;
+                const preview = document.getElementById(previewId);
+                if(preview) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    preview.classList.remove('hidden');
+                }
+                const targetEl = document.getElementById(targetInputId);
+                if(targetEl) targetEl.value = e.target.result;
             };
             reader.readAsDataURL(file);
         }
@@ -751,7 +555,44 @@
             }
         }
 
-        // --- КАТЕГОРІЇ ---
+        // --- КАТЕГОРІЇ ТА ПІД-КАТЕГОРІЇ ---
+        function openLevel3Modal(parentId, subId) {
+            document.getElementById('level3Form').reset();
+            document.getElementById('l3-parent-id').value = parentId;
+            document.getElementById('l3-sub-id').value = subId;
+            document.getElementById('level3Modal').classList.remove('hidden');
+            setTimeout(() => document.getElementById('level3Modal').classList.remove('opacity-0'), 10);
+        }
+        function closeLevel3Modal() { 
+            document.getElementById('level3Modal').classList.add('opacity-0'); 
+            setTimeout(() => document.getElementById('level3Modal').classList.add('hidden'), 300); 
+        }
+        document.getElementById('level3Form').onsubmit = (e) => {
+            e.preventDefault();
+            const parentId = document.getElementById('l3-parent-id').value;
+            const subId = document.getElementById('l3-sub-id').value;
+            const newId = document.getElementById('l3-id').value.toLowerCase();
+            const name = document.getElementById('l3-name').value;
+            
+            const parent = categories.find(c => c.id === parentId);
+            const sub = parent.subcategories.find(s => s.id === subId);
+            if(!sub.subcategories) sub.subcategories = [];
+            
+            if(sub.subcategories.find(s => s.id === newId)) return alert('Такий ID вже є!');
+            sub.subcategories.push({ id: newId, name: name });
+            
+            localStorage.setItem('bv_categories_tree', JSON.stringify(categories));
+            renderCategoriesTree(); closeLevel3Modal(); showNotification('Додано!');
+        };
+        function deleteLevel3(parentId, subId, l3Id) {
+            if(confirm('Видалити під-підкатегорію?')) {
+                const sub = categories.find(c => c.id === parentId).subcategories.find(s => s.id === subId);
+                sub.subcategories = sub.subcategories.filter(l => l.id !== l3Id);
+                localStorage.setItem('bv_categories_tree', JSON.stringify(categories));
+                renderCategoriesTree(); showNotification('Видалено');
+            }
+        }
+        
         function renderCategoriesTree() {
             const container = document.getElementById('categoriesListContainer');
             container.innerHTML = '';
@@ -759,13 +600,29 @@
                 let subHtml = '';
                 if(c.subcategories && c.subcategories.length > 0) {
                     c.subcategories.forEach(sub => {
+                        let level3Html = '';
+                        if(sub.subcategories && sub.subcategories.length > 0) {
+                            sub.subcategories.forEach(l3 => {
+                                level3Html += `
+                                    <div class="flex justify-between items-center py-1 mt-1 ml-6 pl-4 border-l border-white/10 group">
+                                        <div class="text-xs text-gray-400">↳ ${l3.name}</div>
+                                        <div class="opacity-0 group-hover:opacity-100 transition flex gap-2">
+                                            <button onclick="deleteLevel3('${c.id}', '${sub.id}', '${l3.id}')" class="text-red-500 text-[10px]">Видал</button>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                        }
                         subHtml += `
-                            <div class="flex justify-between items-center py-2 border-b border-white/5 ml-4 pl-4 border-l-2 border-white/10 group">
-                                <div><span class="text-xs text-gray-400 mr-2">${sub.id}</span> <span class="text-sm">${sub.name}</span></div>
-                                <div class="opacity-0 group-hover:opacity-100 transition flex gap-2">
-                                    <button onclick="openSubCategoryModal('${c.id}', '${sub.id}')" class="text-blue-400 text-xs">Ред</button>
-                                    <button onclick="deleteSubCategory('${c.id}', '${sub.id}')" class="text-red-500 text-xs">Видал</button>
+                            <div class="py-2 border-b border-white/5 ml-4 pl-4 border-l-2 border-white/10 group">
+                                <div class="flex justify-between items-center">
+                                    <div><span class="text-xs text-[#c5a059] mr-2">${sub.id}</span> <span class="text-sm">${sub.name}</span></div>
+                                    <div class="opacity-0 group-hover:opacity-100 transition flex gap-2">
+                                        <button onclick="openLevel3Modal('${c.id}', '${sub.id}')" class="text-green-400 text-xs">+ Під-підкат</button>
+                                        <button onclick="deleteSubCategory('${c.id}', '${sub.id}')" class="text-red-500 text-xs">Видал</button>
+                                    </div>
                                 </div>
+                                ${level3Html}
                             </div>
                         `;
                     });
@@ -773,10 +630,9 @@
                 container.innerHTML += `
                     <div class="bg-white/5 p-4 rounded-lg border border-white/10">
                         <div class="flex justify-between items-center mb-2">
-                            <div class="font-semibold text-[#c5a059]"><span class="text-xs text-gray-500 font-normal mr-2">${c.id}</span> ${c.name}</div>
+                            <div class="font-semibold text-white"><span class="text-xs text-gray-500 mr-2">${c.id}</span> ${c.name}</div>
                             <div class="flex gap-3">
                                 <button onclick="openSubCategoryModal('${c.id}')" class="text-green-400 text-xs">+ Підкатегорія</button>
-                                <button onclick="openCategoryModal('${c.id}')" class="text-blue-400 text-xs">Ред</button>
                                 <button onclick="deleteCategory('${c.id}')" class="text-red-500 text-xs">Видал</button>
                             </div>
                         </div>
@@ -845,26 +701,6 @@
         }
         function closeSubCategoryModal() { document.getElementById('subCategoryModal').classList.add('opacity-0'); setTimeout(() => document.getElementById('subCategoryModal').classList.add('hidden'), 300); }
 
-        document.getElementById('subCategoryForm').onsubmit = (e) => {
-            e.preventDefault();
-            const parentId = document.getElementById('subcat-parent-id').value;
-            const oldId = document.getElementById('subcat-old-id').value;
-            const newId = document.getElementById('subcat-id').value.toLowerCase();
-            const name = document.getElementById('subcat-name').value;
-            const parent = categories.find(c => c.id === parentId);
-            if(!parent.subcategories) parent.subcategories = [];
-
-            if (oldId) {
-                const sub = parent.subcategories.find(s => s.id === oldId);
-                sub.id = newId; sub.name = name;
-            } else {
-                if(parent.subcategories.find(s => s.id === newId)) return alert('Такий ID вже є!');
-                parent.subcategories.push({ id: newId, name: name });
-            }
-            localStorage.setItem('bv_categories_tree', JSON.stringify(categories));
-            renderCategoriesTree(); closeSubCategoryModal(); showNotification('Збережено');
-        };
-
         function deleteSubCategory(parentId, subId) {
             if(confirm('Видалити підкатегорію?')) {
                 const parent = categories.find(c => c.id === parentId);
@@ -878,10 +714,7 @@
         function renderBannersAdmin() {
             const list = document.getElementById('bannersListContainer');
             list.innerHTML = '';
-            
-            // Читаємо глобальну пропорцію
             let ratio = siteSettings.bannerRatio || '3/1';
-            let ratioClass = `aspect-[${ratio}]`; // Tailwind не завжди підтримує динамічні класи, тому застосуємо inline-style
 
             banners.forEach((b, index) => {
                 list.innerHTML += `
@@ -911,12 +744,9 @@
                 document.getElementById('banner-img').value = b.img;
                 document.getElementById('banner-link').value = b.link || '';
                 document.getElementById('bannerPreview').src = b.img;
-                
-                // Встановлюємо правильну пропорцію для прев'ю
                 let ratio = siteSettings.bannerRatio || '3/1';
                 document.getElementById('bannerPreview').style.aspectRatio = ratio;
                 document.getElementById('bannerPreview').style.display = 'block';
-                
                 document.getElementById('bannerModalTitle').innerText = 'Редагувати Банер';
             }
             document.getElementById('bannerModal').classList.remove('hidden');
@@ -1011,7 +841,6 @@
             }
         }
 
-        // КНОПКИ МАТЕРІАЛІВ
         function renderExclusiveMaterialsAdmin() {
             const list = document.getElementById('exclusiveMaterialsList');
             list.innerHTML = '';
@@ -1036,7 +865,6 @@
             document.getElementById('materialForm').reset();
             document.getElementById('material-old-id').value = '';
             document.getElementById('materialModalTitle').innerText = 'Додати матеріал';
-            
             if(id) {
                 const mat = exclusiveMaterials.find(m => m.id === id);
                 document.getElementById('material-old-id').value = mat.id;
@@ -1048,11 +876,7 @@
             document.getElementById('materialModal').classList.remove('hidden');
             setTimeout(() => document.getElementById('materialModal').classList.remove('opacity-0'), 10);
         }
-
-        function closeMaterialModal() { 
-            document.getElementById('materialModal').classList.add('opacity-0'); 
-            setTimeout(() => document.getElementById('materialModal').classList.add('hidden'), 300); 
-        }
+        function closeMaterialModal() { document.getElementById('materialModal').classList.add('opacity-0'); setTimeout(() => document.getElementById('materialModal').classList.add('hidden'), 300); }
 
         function saveMaterialOption() {
             const oldId = document.getElementById('material-old-id').value;
@@ -1089,29 +913,90 @@
             }
         }
 
-        // --- КОНСТРУКТОР СТОРІНОК ---
+        // =====================================================================
+        // ОНОВЛЕНИЙ КОНСТРУКТОР СТОРІНОК (З КОЛЬОРАМИ ТА HERO ФОТО)
+        // =====================================================================
         function loadPageBuilderForm() {
             const pageId = document.getElementById('builder-page-select').value;
             const container = document.getElementById('builder-form-container');
-            const data = pagesContentDB[pageId] || {title: '', content: '', subtitle: ''};
+            const data = pagesContentDB[pageId] || {title: '', content: '', subtitle: '', titleColor: '#ffffff', subColor: '#cccccc', heroBg: '', heroOpacity: 0.4};
 
             if(pageId === 'home_hero') {
                 container.innerHTML = `
                     <div class="builder-section">
-                        <label class="text-[10px] uppercase text-gray-400 block mb-1">Головний заголовок Hero</label>
-                        <input type="text" id="bld-hero-title" class="input-field mb-4" value="${data.title || ''}">
-                        <label class="text-[10px] uppercase text-gray-400 block mb-1">Підзаголовок Hero</label>
-                        <input type="text" id="bld-hero-sub" class="input-field mb-4" value="${data.subtitle || ''}">
-                        <button onclick="saveBuilderData('${pageId}')" class="btn-primary w-full sm:w-auto">Зберегти</button>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="text-[10px] uppercase text-gray-400 block mb-1">Головний заголовок Hero</label>
+                                <input type="text" id="bld-hero-title" class="input-field" value="${data.title || ''}">
+                            </div>
+                            <div>
+                                <label class="text-[10px] uppercase text-gray-400 block mb-1">Колір заголовка</label>
+                                <input type="color" id="bld-hero-title-color" class="input-field h-[46px] p-1 cursor-pointer" value="${data.titleColor || '#ffffff'}">
+                            </div>
+                            <div>
+                                <label class="text-[10px] uppercase text-gray-400 block mb-1">Підзаголовок Hero</label>
+                                <input type="text" id="bld-hero-sub" class="input-field" value="${data.subtitle || ''}">
+                            </div>
+                            <div>
+                                <label class="text-[10px] uppercase text-gray-400 block mb-1">Колір підзаголовка</label>
+                                <input type="color" id="bld-hero-sub-color" class="input-field h-[46px] p-1 cursor-pointer" value="${data.subColor || '#cccccc'}">
+                            </div>
+                        </div>
+
+                        <div class="border-t border-white/10 pt-4 mt-4 mb-4">
+                            <h4 class="text-sm font-semibold text-[#c5a059] mb-3">Фонове зображення (Hero)</h4>
+                            <div class="grid grid-cols-1 gap-4 mb-4">
+                                <div>
+                                    <label class="text-[10px] uppercase text-gray-400 block mb-1">Посилання (URL) або завантаження файлу</label>
+                                    <div class="flex flex-col sm:flex-row gap-2">
+                                        <input type="text" id="bld-hero-bg" class="input-field flex-grow" placeholder="https://..." value="${data.heroBg || siteSettings.heroBg || ''}">
+                                        <div class="relative overflow-hidden bg-white/10 hover:bg-white/20 transition border border-white/20 rounded-lg px-4 py-2 cursor-pointer whitespace-nowrap flex items-center justify-center">
+                                            <span class="text-xs text-blue-400 font-medium">📁 З файлу</span>
+                                            <input type="file" accept="image/png, image/jpeg, image/webp" class="absolute inset-0 opacity-0 cursor-pointer" onchange="handleImageUpload(event, 'heroPreview', 'bld-hero-bg', 3)">
+                                        </div>
+                                    </div>
+                                    <p class="text-[10px] text-gray-500 mt-1">Рекомендований розмір: 1920x1080px (16:9), формат WebP або JPG (до 3MB).</p>
+                                </div>
+                                <div class="flex gap-4 items-start">
+                                    <div class="w-1/2">
+                                        <label class="text-[10px] uppercase text-gray-400 block mb-1">Затемнення фону (0.0 - 1.0)</label>
+                                        <input type="number" step="0.1" min="0" max="1" id="bld-hero-opacity" class="input-field" value="${data.heroOpacity !== undefined ? data.heroOpacity : (siteSettings.heroOpacity !== undefined ? siteSettings.heroOpacity : 0.4)}">
+                                    </div>
+                                    <div class="w-1/2">
+                                        <label class="text-[10px] uppercase text-gray-400 block mb-1">Прев'ю фону</label>
+                                        <img id="heroPreview" src="${data.heroBg || siteSettings.heroBg || ''}" class="h-16 w-full object-cover rounded border border-white/20 ${data.heroBg || siteSettings.heroBg ? '' : 'hidden'}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="saveBuilderData('${pageId}')" class="btn-primary w-full sm:w-auto">Зберегти налаштування Hero</button>
                     </div>
                 `;
             } else {
                 container.innerHTML = `
                     <div class="builder-section">
-                        <label class="text-[10px] uppercase text-gray-400 block mb-1">Заголовок Сторінки</label>
-                        <input type="text" id="bld-page-title" class="input-field mb-4" value="${data.title || ''}">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="text-[10px] uppercase text-gray-400 block mb-1">Заголовок Сторінки</label>
+                                <input type="text" id="bld-page-title" class="input-field" value="${data.title || ''}">
+                            </div>
+                            <div>
+                                <label class="text-[10px] uppercase text-gray-400 block mb-1">Колір заголовка</label>
+                                <input type="color" id="bld-page-title-color" class="input-field h-[46px] p-1 cursor-pointer" value="${data.titleColor || '#ffffff'}">
+                            </div>
+                        </div>
+                        
                         <label class="text-[10px] uppercase text-gray-400 block mb-1">Контент (HTML підтримується)</label>
-                        <textarea id="bld-page-content" class="input-field h-[40vh] font-mono text-xs leading-relaxed" spellcheck="false">${data.content || ''}</textarea>
+                        <textarea id="bld-page-content" class="input-field h-[40vh] font-mono text-xs leading-relaxed mb-4" spellcheck="false">${data.content || ''}</textarea>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                             <div>
+                                <label class="text-[10px] uppercase text-gray-400 block mb-1">Колір тексту / підзаголовків на сторінці</label>
+                                <input type="color" id="bld-page-sub-color" class="input-field h-[46px] p-1 cursor-pointer" value="${data.subColor || '#cccccc'}">
+                            </div>
+                        </div>
+
                         <button onclick="saveBuilderData('${pageId}')" class="btn-primary w-full sm:w-auto mt-4">Зберегти Сторінку</button>
                     </div>
                 `;
@@ -1120,15 +1005,23 @@
 
         function saveBuilderData(pageId) {
             if (!pagesContentDB[pageId]) pagesContentDB[pageId] = {};
+            
             if(pageId === 'home_hero') {
                 pagesContentDB[pageId].title = document.getElementById('bld-hero-title').value;
+                pagesContentDB[pageId].titleColor = document.getElementById('bld-hero-title-color').value;
                 pagesContentDB[pageId].subtitle = document.getElementById('bld-hero-sub').value;
+                pagesContentDB[pageId].subColor = document.getElementById('bld-hero-sub-color').value;
+                pagesContentDB[pageId].heroBg = document.getElementById('bld-hero-bg').value;
+                pagesContentDB[pageId].heroOpacity = document.getElementById('bld-hero-opacity').value;
             } else {
                 pagesContentDB[pageId].title = document.getElementById('bld-page-title').value;
+                pagesContentDB[pageId].titleColor = document.getElementById('bld-page-title-color').value;
                 pagesContentDB[pageId].content = document.getElementById('bld-page-content').value;
+                pagesContentDB[pageId].subColor = document.getElementById('bld-page-sub-color').value;
             }
+            
             localStorage.setItem('bv_pages_content', JSON.stringify(pagesContentDB));
-            showNotification('Сторінку оновлено!');
+            showNotification('Сторінку/Налаштування оновлено!');
         }
 
         // --- ПРАЙС-БІЛДЕР ---
@@ -1163,7 +1056,10 @@
                 addr1: document.getElementById('set-addr1').value,
                 addr2: document.getElementById('set-addr2').value,
                 goldRate: newRate,
-                bannerRatio: newRatio
+                bannerRatio: newRatio,
+                // Зберігаємо старі налаштування Hero, якщо вони були в settings
+                heroBg: siteSettings.heroBg,
+                heroOpacity: siteSettings.heroOpacity
             };
             localStorage.setItem('bv_settings', JSON.stringify(siteSettings));
             
@@ -1176,7 +1072,6 @@
                 renderProducts();
             }
             
-            // Оновлюємо відображення банерів в адмінці
             renderBannersAdmin();
             showNotification('Глобальні налаштування збережено');
         }
